@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carnaval Perfume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         :root {
+            --bg-color: #0A192F;
+            --text-color: #F5F2EB;
+            --gold: #C5A572;
+            --gold-hover: #e0bc84;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4,
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-top: 1rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .signature:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(197, 165, 114, 0.6);
+        }
+        
+        .insta-icon {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            transition: all 0.4s ease;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .insta-icon:hover {
+            color: var(--gold);
+            transform: translateY(-3px) scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(197, 165, 114, 0.6));
+        }
+        
+        @media (max-width: 768px) {
+            .insta-icon {
+                font-size: 1.5rem;
+            }
+        }
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        button {
+            cursor: none;
+            font-family: inherit;
+            border: none;
+            background: transparent;
+        }
+        
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        .cursor-grow {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(197, 165, 114, 0.2);
+            border-color: rgba(197, 165, 114, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .cursor {
+                display: none;
+            }
+            * {
+                cursor: auto !important;
+            }
+        }
+        
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+        }
+        
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        
+        nav.scrolled {
+            background: rgba(10, 25, 47, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-icons i {
+            font-size: 1.2rem;
+            transition: color 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .nav-icons i:hover {
+            color: var(--gold);
+        }
+        
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gold);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+        
+        .burger {
+            display: none;
+            font-size: 1.5rem;
+        }
+        
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        #three-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -2;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background: url('images/islam.jpg') center/cover no-repeat;
+            opacity: 0.4;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom, rgba(10, 25, 47, 0.3) 0%, rgba(10, 25, 47, 1) 100%);
+        }
+        
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+        }
+        
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+            font-weight: 600;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .btn-gold:hover {
+            background: var(--gold-hover);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(197, 165, 114, 0.4);
+        }
+        
+        .products-sec {
+            padding: 5rem 5%;
+            flex: 1;
+            scroll-margin-top: 80px;
+        }
+        
+        .story-sec {
+            scroll-margin-top: 80px;
+        }
+        
+        .hero {
+            scroll-margin-top: 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--gold);
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .search-bar {
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            display: flex;
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            overflow: hidden;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: var(--glass-bg);
+            border: none;
+            color: #fff;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s;
+            position: relative;
+            padding-bottom: 1.5rem;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .img-wrapper {
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .heart-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            z-index: 2;
+            color: #fff;
+            WebkitTextStroke: 1px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        
+        html[dir="ltr"] .heart-btn {
+            right: auto;
+            left: 15px;
+        }
+        
+        .heart-btn.active,
+        .heart-btn:hover {
+            color: #ff4757;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .product-brand {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .add-cart-btn {
+            width: 80%;
+            margin: 1rem auto 0;
+            padding: 0.8rem;
+            border-radius: 25px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: #fff;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            cursor: pointer;
+        }
+        
+        .product-card:hover .add-cart-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .add-cart-btn:hover {
+            background: var(--gold);
+            color: #000;
+        }
+        
+        .story-sec {
+            padding: 5rem 5%;
+            position: relative;
+        }
+        
+        .story-card {
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            transition: transform 0.4s, border-color 0.4s;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .story-card:hover {
+            transform: scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(197, 165, 114, 0.2);
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-val {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* OVERLAY */
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* LEGENDARY SIDE DRAWER */
+        
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            width: 450px;
+            height: 100%;
+            background: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1002;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(197, 165, 114, 0.2);
+        }
+        
+        html[dir="rtl"] .side-drawer {
+            right: -450px;
+            border-right: none;
+            border-radius: 24px 0 0 24px;
+            padding: 2rem;
+        }
+        
+        html[dir="ltr"] .side-drawer {
+            right: -450px;
+            border-left: none;
+            border-radius: 24px 0 0 24px;
+            padding: 2rem;
+        }
+        
+        .side-drawer.active {
+            transform: translateX(-450px);
+        }
+        
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .drawer-header h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+        }
+        
+        .close-btn {
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #ff4757;
+            transform: rotate(90deg);
+        }
+        
+        .cart-items,
+        .wishlist-items {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        
+        .cart-items::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .cart-items::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: 10px;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            transition: 0.3s;
+        }
+        
+        .cart-item:hover {
+            border-color: rgba(197, 165, 114, 0.4);
+            transform: translateX(-5px);
+        }
+        
+        html[dir="ltr"] .cart-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+        }
+        
+        .qty-controls button {
+            background: var(--glass-bg);
+            color: #fff;
+            border: 1px solid var(--glass-border);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .qty-controls button:hover {
+            background: var(--gold);
+            color: #000;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        html[dir="ltr"] .remove-btn {
+            left: auto;
+            right: 1rem;
+        }
+        
+        .remove-btn:hover {
+            color: #ff4757;
+            transform: scale(1.2) rotate(-5deg);
+        }
+        
+        .cart-footer {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            color: var(--gold);
+            border-top: 1px dashed rgba(197, 165, 114, 0.3);
+            padding-top: 1rem;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            display: block;
+            text-align: center;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #e0bc84 0%, #C5A572 100%);
+            color: #000;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(197, 165, 114, 0.2);
+            margin-bottom: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(197, 165, 114, 0.4);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        .checkout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .checkout-btn .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: rippleAnim 0.6s ease-out;
+            pointer-events: none;
+        }
+        
+        @keyframes rippleAnim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .continue-btn {
+            width: 100%;
+            display: block;
+            text-align: center;
+            padding: 1rem;
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        
+        .continue-btn:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .empty-cart-msg {
+            text-align: center;
+            color: #aaa;
+            margin-top: 3rem;
+        }
+        
+        .empty-cart-msg i {
+            font-size: 4rem;
+            color: rgba(197, 165, 114, 0.3);
+            margin-bottom: 1rem;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #fff;
+            color: #0A192F;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            z-index: 2000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast-icon {
+            color: #27ae60;
+        }
+        
+        .footer {
+            position: relative;
+            margin-top: 3rem;
+            background: #071324;
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .footer-text {
+            font-size: 1rem;
+            color: #ccc;
+            z-index: 2;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .animated-wave {
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, #C5A572, #e0bc84, #f5f2eb, #e0bc84, #C5A572);
+            background-size: 50% 100%;
+            animation: waveMove 3s linear infinite;
+        }
+        
+        @keyframes waveMove {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .burger {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            /* FULL WIDTH SIDE DRAWER FOR MOBILE */
+            .side-drawer {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+            html[dir="rtl"] .side-drawer {
+                right: -100%;
+            }
+            html[dir="ltr"] .side-drawer {
+                right: -100%;
+            }
+            .side-drawer.active {
+                transform: translateX(-100%);
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .mobile-menu {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--glass-border);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cursor"></div>
+
+    <nav>
+        <div class="logo">Carnaval Perfume</div>
+        <ul class="nav-links">
+            <li><a href="#home" data-scroll="home" data-i18n="nav_home">Home</a></li>
+            <li><a href="#products" data-scroll="products" data-i18n="nav_shop">Shop</a></li>
+            <li><a href="#story" data-scroll="story" data-i18n="nav_story">Our Story</a></li>
+        </ul>
+        <div class="nav-icons">
+            <i class="fas fa-globe" id="lang-toggle" title="English / عربي"></i>
+            <i class="far fa-heart" id="wishlist-btn" title="Wishlist"><span class="badge" id="wishlist-badge">0</span></i>
+            <i class="fas fa-shopping-bag" id="cart-btn" title="Cart"><span class="badge" id="cart-badge" style="background:#27ae60; color:#fff;">0</span></i>
+            <i class="fas fa-bars burger" id="burger-btn"></i>
+        </div>
+    </nav>
+
+    <div class="overlay" id="main-overlay"></div>
+
+    <div class="side-drawer" id="cart-drawer">
+        <div class="drawer-header">
+            <h2 class="playfair" data-i18n="cart_title">Your Cart</h2>
+            <button class="close-btn" onclick="toggleDrawer('cart-drawer')"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items-container"></div>
+        <div class="cart-footer">
+            <div class="totals-row"><span data-i18n="subtotal">Subtotal</span><span id="cart-subtotal">0 DZD</span></div>
+            <div class="totals-row"><span data-i18n="delivery_est">Delivery Est.</span><span>15 DZD</span></div>
+            <div class="cart-total"><span class="playfair" data-i18n="total">Total:</span> <span id="cart-total-price">0 DZD</span></div>
+            <button class="checkout-btn" onclick="proceedToCheckout(event)" id="proceed-btn" data-i18n="checkout">Proceed to Checkout</button>
+            <button class="continue-btn" onclick="toggleDrawer('cart-drawer')" data-i18n="continue">Continue Shopping</button>
+        </div>
+    </div>
+
+    <div class="side-drawer" id="wishlist-drawer">
+        <div class="drawer-header">
+            <h2 class="playfair" data-i18n="wishlist_title">Wishlist</h2><button class="close-btn" onclick="toggleDrawer('wishlist-drawer')"><i class="fas fa-times"></i></button></div>
+        <div class="wishlist-items" id="wishlist-items-container"></div>
+    </div>
+
+    <div class="side-drawer" id="nav-drawer">
+        <div class="drawer-header">
+            <h2 class="playfair">Menu</h2><button class="close-btn" onclick="toggleDrawer('nav-drawer')"><i class="fas fa-times"></i></button></div>
+        <div class="mobile-menu">
+            <a href="#home" data-scroll="home" data-i18n="nav_home">Home</a>
+            <a href="#products" data-scroll="products" data-i18n="nav_shop">Shop</a>
+            <a href="#story" data-scroll="story" data-i18n="nav_story">Our Story</a>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quiz-modal" style="position:fixed; top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9); width:90%;max-width:600px;z-index:1005;border-radius:20px;padding:2.5rem;opacity:0;visibility:hidden;transition:all 0.3s;background:#0f203b;border:1px solid var(--gold);box-shadow:0 0 40px rgba(197,165,114,0.2);">
+        <div class="drawer-header" style="border-bottom:none;">
+            <h2 class="playfair" data-i18n="quiz_title">Discover Your Scent</h2>
+            <button class="close-btn" onclick="closeQuiz()"><i class="fas fa-times"></i></button>
+        </div>
+        <div style="width:100%;height:6px;background:rgba(255,255,255,0.1);border-radius:10px;margin-bottom:2rem;overflow:hidden;">
+            <div id="quiz-progress" style="height:100%;background:var(--gold);width:0%;transition:width 0.4s ease;"></div>
+        </div>
+        <div id="quiz-content">
+            <h3 id="quiz-question" style="margin-top:1rem;font-family:'Inter';text-align:center;"></h3>
+            <div id="quiz-options" style="display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem;"></div>
+        </div>
+        <div id="quiz-result" style="display:none;text-align:center;"><i class="fas fa-magic" style="font-size:3rem;color:var(--gold);margin-bottom:1rem;"></i>
+            <h3 style="margin:1rem 0;font-family:'Playfair Display';"><span data-i18n="quiz_result_title">Your Perfect Match:</span><br><br><span id="quiz-cat" style="color:var(--gold);font-size:2rem;"></span></h3>
+            <div id="quiz-recommendations" style="display:flex;gap:1rem;overflow-x:auto;padding:1.5rem 0;"></div>
+        </div>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <canvas id="three-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="playfair" data-i18n="hero_title">Where Perfume Becomes Identity</h1>
+            <p data-i18n="hero_subtitle">A luxury collection of world-class fragrances</p>
+            <button class="btn-gold" onclick="openQuiz()" data-i18n="hero_btn">Find Your Perfect Scent</button>
+        </div>
+    </section>
+
+    <section class="products-sec" id="products">
+        <h2 class="section-title playfair" data-i18n="sec_products">Our Luxury Scents</h2>
+        <div class="search-bar">
+            <input type="text" id="product-search" data-i18n-prop="placeholder" data-i18n="search_placeholder">
+            <button style="background:var(--glass-bg); border:none; padding:0 1.5rem; color:var(--gold);"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="product-grid" id="main-product-grid"></div>
+    </section>
+
+    <section class="story-sec" id="story">
+        <div class="story-card glass">
+            <h2 class="section-title playfair" data-i18n="story_title" style="margin-bottom:1rem;">Our Story</h2>
+            <div id="typewriter-container" style="min-height: 80px;">
+                <p data-i18n="story_text" class="typed-text" style="line-height: 1.8; font-size: 1.1rem; color:#ccc;">
+                    At 'Carnaval Perfume', we believe a fragrance is not just a scent, but a personal signature that leaves an unforgettable mark. We carefully select the best global perfumes to put luxury in your hands.
+                </p>
+            </div>
+
+            <p class="signature">~ vrx ~</p>
+            <br>
+            <a href="https://www.instagram.com/carnaval.perfume?igsh=ODdsZm9jdHliY2dp" target="_blank" rel="noopener noreferrer" class="insta-icon" title="Follow us on Instagram">
+                <i class="fab fa-instagram"></i> <span style="font-size:0.9rem; vertical-align:middle; margin-left:0.3rem;">@carnaval.perfume</span>
+            </a>
+
+            <div class="stats-container">
+                <div class="stat-item"><i class="fas fa-crown stat-icon"></i>
+                    <div class="stat-val">
+                        <h3 class="counter" data-target="15">0</h3>+</div><span data-i18n="stat_brands">Global Brands</span></div>
+                <div class="stat-item"><i class="fas fa-certificate stat-icon"></i>
+                    <div class="stat-val">
+                        <h3 class="counter" data-target="100">0</h3>%</div><span data-i18n="stat_auth">Authentic</span></div>
+                <div class="stat-item"><i class="fas fa-users stat-icon"></i>
+                    <div class="stat-val">
+                        <h3 class="counter" data-target="5000">0</h3>+</div><span data-i18n="stat_clients">Happy Clients</span></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-text">© Carnaval Perfume 2025 – فن العطور الفاخرة</div>
+        <div class="wave-container">
+            <div class="animated-wave"></div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast"><i class="fas fa-check-circle toast-icon"></i> <span id="toast-msg">Added successfully</span></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"; import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"; // REAL FIREBASE CONFIG (provided by user)
+        const firebaseConfig = { apiKey: "AIzaSyCLbxqMBpPbqx7LpXQlLjp1QVI1L8d725Q", authDomain: "carnaval-perfume.firebaseapp.com", projectId: "carnaval-perfume", storageBucket: "carnaval-perfume.firebasestorage.app", messagingSenderId: "43912886925",
+        appId: "1:43912886925:web:069a40991c1e97b96140c4", measurementId: "G-F939TLVE9Z" }; let db; try { const app = initializeApp(firebaseConfig); db = getFirestore(app); } catch(e) { console.warn("Firebase init failed, using localStorage fallback.",
+        e); } const products = [ { id: 1, name: "Stronger With You Intensely", brand: "Emporio Armani", category: "Romantic", price: 5000, popularity: 93, image: "images/islam1.jpg", images: ["images/islam1.jpg", "images/islam11.jpg", "images/islam111.jpg"],
+        desc_ar: "دفء محب وحلاوة التوفي. اختيار مثالي للشتاء.", notes: "Toffee, Cinnamon, Amber", rating: 4.8, reviews: 450, similar: [10, 6, 7] }, { id: 2, name: "Althaïr", brand: "Parfums de Marly", category: "Luxury", price: 7000, popularity: 87, image:
+        "images/islam2.jpg", images: ["images/islam2.jpg", "images/islam22.jpg", "images/islam222.jpg", "images/islam2222.jpg"], desc_ar: "فخامة الفانيليا الأصيلة.", notes: "Orange Blossom, Bourbon Vanilla, Guaiac Wood", rating: 4.6, reviews: 80, similar:
+        [9, 8] }, { id: 3, name: "Dior Homme Intense", brand: "Dior", category: "Romantic", price: 5000, popularity: 94, image: "images/islam3.jpg", images: ["images/islam3.jpg", "images/islam33.jpg", "images/islam333.jpg", "images/islam3333.jpg"], desc_ar:
+        "رقي السوسن في أبهى صوره. دافئ ورومانسي.", notes: "Iris, Ambrette, Wood", rating: 4.8, reviews: 600, similar: [5, 4] }, { id: 4, name: "Le Male Le Parfum", brand: "Jean Paul Gaultier", category: "Strong", price: 5500, popularity: 89, image: "images/islam4.jpg",
+        images: ["images/islam4.jpg", "images/islam44.jpg", "images/islam444.jpg", "images/islam4444.jpg"], desc_ar: "عطر رجالي قوي وجذاب.", notes: "Cardamom, Iris, Vanilla", rating: 4.7, reviews: 310, similar: [6, 11] }, { id: 5, name: "Uomo Born In
+        Roma Intense", brand: "Valentino", category: "Romantic", price: 5500, popularity: 90, image: "images/islam5.jpg", images: ["images/islam5.jpg", "images/islam55.jpg", "images/islam555.jpg"], desc_ar: "لمسة رومانية رومانسية جذابة ومثيرة.", notes:
+        "Vanilla, Vetiver, Lavandin", rating: 4.7, reviews: 250, similar: [3, 1] }, { id: 6, name: "Le Male Elixir", brand: "Jean Paul Gaultier", category: "Strong", price: 6500, popularity: 96, image: "images/islam6.jpg", images: ["images/islam6.jpg",
+        "images/islam66.jpg", "images/islam666.jpg"], desc_ar: "إكسير السحر والقوة. رائحة مكثفة.", notes: "Lavender, Tonka Bean, Benzoin", rating: 4.9, reviews: 400, similar: [4, 11] }, { id: 7, name: "Ultra Male", brand: "Jean Paul Gaultier", category:
+        "Romantic", price: 4500, popularity: 85, image: "images/islam7.jpg", images: ["images/islam7.jpg", "images/islam77.jpg", "images/islam777.jpg"], desc_ar: "حلاوة ورومانسية لا نهائية.", notes: "Pear, Vanilla, Cinnamon", rating: 4.5, reviews: 500,
+        similar: [1, 3] }, { id: 8, name: "Angels' Share", brand: "Kilian Paris", category: "Luxury", price: 6500, popularity: 97, image: "images/islam8.jpg", images: ["images/islam8.jpg", "images/islam88.jpg", "images/islam888.jpg"], desc_ar: "تحفة فنية
+        برائحة الكونياك.", notes: "Cognac, Cinnamon, Tonka Bean", rating: 4.9, reviews: 500, similar: [2, 9] }, { id: 9, name: "Layton Exclusif", brand: "Parfums de Marly", category: "Luxury", price: 7000, popularity: 88, image: "images/islam9.jpg", images:
+        ["images/islam9.jpg", "images/islam99.jpg", "images/islam999.jpg"], desc_ar: "النسخة الأكثر تعقيداً وفخامة من لايتون.", notes: "Almond, Civet, Oud", rating: 4.7, reviews: 150, similar: [2, 8] }, { id: 10, name: "Stronger With You Absolutely",
+        brand: "Emporio Armani", category: "Strong", price: 5500, popularity: 91, image: "images/islam10.jpg", images: ["images/islam10.jpg", "images/islam100.jpg", "images/islam1000.jpg"], desc_ar: "قوة الفانيليا مع لمسات خشبية مدخنة.", notes: "Rum,
+        Vanilla, Cedar", rating: 4.7, reviews: 300, similar: [1, 4] }, { id: 11, name: "Sauvage Elixir", brand: "Dior", category: "Strong", price: 6500, popularity: 98, image: "images/islam011.jpg", images: ["images/islam011.jpg", "images/islam0011.jpg",
+        "images/islam00011.jpg"], desc_ar: "تركيز عالي وقوة مطلقة تجسد الرجولة.", notes: "Nutmeg, Lavender, Sandalwood", rating: 4.9, reviews: 1000, similar: [6, 4] }, { id: 12, name: "Pacific Chill", brand: "Louis Vuitton", category: "Fresh", price:
+        7000, popularity: 90, image: "images/islam12.jpg", images: ["images/islam12.jpg", "images/islam122.jpg"], desc_ar: "انتعاش المحيط الهادئ في زجاجة.", notes: "Orange, Mint, Basil", rating: 4.7, reviews: 85, similar: [15, 14] }, { id: 13, name: "Le
+        Beau Le Parfum", brand: "Jean Paul Gaultier", category: "Romantic", price: 5500, popularity: 88, image: "images/islam13.jpg", images: ["images/islam13.jpg", "images/islam133.jpg", "images/islam1333.jpg"], desc_ar: "جاذبية لا تقاوم ورومانسية دافئة.",
+        notes: "Tonka Bean, Coconut, Woods", rating: 4.6, reviews: 200, similar: [14, 7] }, { id: 14, name: "Le Beau Paradise Garden", brand: "Jean Paul Gaultier", category: "Fresh", price: 6000, popularity: 92, image: "images/islam14.jpg", images: ["images/islam14.jpg",
+        "images/islam144.jpg", "images/islam1444.jpg"], desc_ar: "حديقة الجنة الاستوائية المنعشة.", notes: "Fig, Mint, Coconut", rating: 4.8, reviews: 150, similar: [15, 12] }, { id: 15, name: "Imagination", brand: "Louis Vuitton", category: "Fresh",
+        price: 7000, popularity: 95, image: "images/islam15.jpg", images: ["images/islam15.jpg", "images/islam155.jpg"], desc_ar: "عطر خيالي يجمع بين الانتعاش والعمق.", notes: "Citrus, Black Tea, Ambroxan", rating: 4.8, reviews: 120, similar: [12, 14]
+        } ]; window.allProducts = products; const i18n = { ar: { nav_home: "الرئيسية", nav_shop: "تسوق", nav_story: "قصتنا", hero_title: "حيث يصبح العطر هوية", hero_subtitle: "مجموعة فاخرة من العطور العالمية", hero_btn: "اختبر عطرك المثالي", sec_products:
+        "عطورنا الفاخرة", search_placeholder: "ابحث عن عطر أو علامة تجارية...", story_title: "قصتنا", add_to_cart: "أضف للسلة", story_text: "نحن في 'كرنفال للعطور' نؤمن بأن العطر ليس مجرد رائحة، بل هو توقيع شخصي يترك أثراً لا يُنسى. نختار بعناية فائقة
+        أفضل العطور العالمية لنضع الفخامة بين يديك.", stat_brands: "ماركات عالمية", stat_auth: "أصلية مضمونة", stat_clients: "عميل سعيد", cart_title: "سلة المشتريات", checkout: "إتمام الطلب", total: "المجموع:", subtotal: "المجموع الفرعي:", delivery_est:
+        "التوصيل التقريبي", continue: "مواصلة التسوق", wishlist_title: "المفضلة", empty_cart: "السلة فارغة", added: "تمت الإضافة", quiz_title: "اكتشف عطرك المناسب", quiz_result_title: "الاختيار الأنسب لك: " }, en: { nav_home: "Home", nav_shop: "Shop",
+        nav_story: "Our Story", hero_title: "Where Perfume Becomes Identity", hero_subtitle: "A luxury collection of world-class fragrances", hero_btn: "Find Your Perfect Scent", sec_products: "Our Luxury Scents", search_placeholder: "Search for a perfume
+        or brand...", story_title: "Our Story", add_to_cart: "Add to Cart", story_text: "At 'Carnaval Perfume', we believe a fragrance is not just a scent, but a personal signature that leaves an unforgettable mark. We carefully select the best global
+        perfumes to put luxury in your hands.", stat_brands: "Global Brands", stat_auth: "Authentic", stat_clients: "Happy Clients", cart_title: "Your Cart", checkout: "Proceed to Checkout", total: "Total:", subtotal: "Subtotal:", delivery_est: "Delivery
+        Est.", continue: "Continue Shopping", wishlist_title: "Wishlist", empty_cart: "Your cart is empty", added: "Added successfully", quiz_title: "Discover Your Scent", quiz_result_title: "Your Perfect Match: " } }; // DEFAULT LANGUAGE EN let currentLang
+        = localStorage.getItem('cp_lang') || 'en'; const docHtml = document.documentElement; function applyLanguage() { docHtml.lang = currentLang; docHtml.dir = currentLang === 'ar' ? 'rtl' : 'ltr'; document.querySelectorAll('[data-i18n]').forEach(el
+        => { const key = el.getAttribute('data-i18n'); if(i18n[currentLang][key]) { if (el.getAttribute('data-i18n-prop') === 'placeholder') el.placeholder = i18n[currentLang][key]; else el.innerHTML = i18n[currentLang][key]; } }); renderProducts(); updateCartUI();
+        updateWishlistUI(); } window.toggleLanguage = function() { currentLang = currentLang === 'ar' ? 'en' : 'ar'; localStorage.setItem('cp_lang', currentLang); applyLanguage(); }; document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
+        let sessionId = localStorage.getItem('cp_session'); if(!sessionId) { sessionId = `user_${Date.now()}`; localStorage.setItem('cp_session', sessionId); } let cart = []; let wishlist = JSON.parse(localStorage.getItem('cp_wishlist') || '[]'); async
+        function loadCart() { try { if(db) { const snap = await getDoc(doc(db, "carts", sessionId)); if (snap.exists()) cart = snap.data().items || []; } else throw new Error(); } catch(e) { cart = JSON.parse(localStorage.getItem('cp_cart_fallback') ||
+        '[]'); } updateCartUI(); } async function saveCart() { // ALWAYS save to localStorage FIRST (synchronous, reliable) localStorage.setItem('cp_cart_fallback', JSON.stringify(cart)); // Firebase save with timeout - fire and forget, never blocks UI
+        try { if(db) { const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000)); await Promise.race([setDoc(doc(db, "carts", sessionId), { items: cart }), timeoutPromise]); } } catch(e) { /* Firebase failed
+        or timed out - localStorage is the source of truth */ } } window.addToCart = async function(id, e) { const prod = products.find(p => p.id === id); if(!prod) return; const existing = cart.find(i => i.id === id); if(existing) existing.qty += 1;
+        else cart.push({ id, name: prod.name, price: prod.price, img: prod.image, qty: 1 }); updateCartUI(); showToast(currentLang === 'ar' ? `تمت إضافة ${prod.name}` : `Added ${prod.name}`, 'fa-check-circle'); if(e && e.currentTarget) { gsap.fromTo(e.currentTarget,
+        {scale: 1}, {scale: 1.1, rotation: 5, duration: 0.2, yoyo:true, repeat:1}); } gsap.fromTo('#cart-badge', { scale: 1 }, { scale: 1.5, duration: 0.2, yoyo: true, repeat: 1 }); await saveCart(); const drawer = document.getElementById('cart-drawer');
+        if(!drawer.classList.contains('active')) toggleDrawer('cart-drawer'); }; window.updateQty = async function(id, delta) { const item = cart.find(i => i.id === id); if(!item) return; item.qty += delta; if(item.qty
+        <=0 ) cart=c art.filter(i=>
+        i.id !== id); updateCartUI(); await saveCart(); }; window.removeFromCart = async function(id) { cart = cart.filter(i => i.id !== id); updateCartUI(); await saveCart(); }; function updateCartUI() { const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total-price'); const subtotalEl = document.getElementById('cart-subtotal'); document.getElementById('cart-badge').innerText = cart.length; container.innerHTML = ''; let subtotal = 0; if (cart.length
+            === 0) { container.innerHTML = `
+            <div class="empty-cart-msg"><i class="fas fa-shopping-bag"></i>
+                <p>${i18n[currentLang].empty_cart}</p>
+            </div>`; subtotalEl.innerText = `0 DZD`; totalEl.innerText = `0 DZD`; document.getElementById('proceed-btn').disabled = true; document.getElementById('proceed-btn').style.opacity = '0.5'; return; } document.getElementById('proceed-btn').disabled
+            = false; document.getElementById('proceed-btn').style.opacity = '1'; cart.forEach((item, index) => { subtotal += item.price * item.qty; const el = document.createElement('div'); el.className = 'cart-item'; el.innerHTML = `
+            <button class="remove-btn" onclick="removeFromCart(${item.id})"><i class="fas fa-trash"></i></button>
+            <img src="${item.img}" alt="${item.name}">
+            <div class="item-details" style="flex:1;">
+                <h4 style="font-size:1.05rem;font-weight:500;">${item.name}</h4>
+                <p style="color:var(--gold);font-weight:600;margin-top:0.3rem;">${item.price} DZD</p>
+                <div class="qty-controls">
+                    <button onclick="updateQty(${item.id}, -1)"><i class="fas fa-minus" style="font-size:0.7rem;"></i></button>
+                    <span style="font-weight:bold;">${item.qty}</span>
+                    <button onclick="updateQty(${item.id}, 1)"><i class="fas fa-plus" style="font-size:0.7rem;"></i></button>
+                </div>
+            </div>`; container.appendChild(el); if (document.getElementById('cart-drawer').classList.contains('active')) { gsap.fromTo(el, {opacity:0, x:20}, {opacity:1, x:0, delay: index*0.1}); } }); subtotalEl.innerText = `${subtotal} DZD`; totalEl.innerText
+            = `${subtotal + 15} DZD`; } window.proceedToCheckout = function(e) { if(cart.length === 0) { showToast(currentLang === 'ar' ? 'السلة فارغة. أضف منتجات أولاً.' : 'Your cart is empty. Add some products first.', 'fa-exclamation-circle'); return;
+            } const btn = document.getElementById('proceed-btn'); if(btn.disabled) return; btn.disabled = true; // Gold ripple effect if(e && e.currentTarget) { const rect = btn.getBoundingClientRect(); const ripple = document.createElement('span'); ripple.className
+            = 'ripple'; const size = Math.max(rect.width, rect.height); ripple.style.width = ripple.style.height = size + 'px'; ripple.style.left = ((e.clientX || rect.left + rect.width/2) - rect.left - size/2) + 'px'; ripple.style.top = ((e.clientY ||
+            rect.top + rect.height/2) - rect.top - size/2) + 'px'; btn.appendChild(ripple); } btn.innerHTML = '<i class="fas fa-spinner" style="animation: spin 1s linear infinite; margin-right:0.5rem;"></i> <i class="fas fa-shipping-fast"></i>'; // SYNCHRONOUS
+            localStorage save - guaranteed to work localStorage.setItem('checkoutCart', JSON.stringify(cart)); localStorage.setItem('cp_cart_fallback', JSON.stringify(cart)); localStorage.setItem('cp_lang', currentLang); localStorage.setItem('checkoutTimestamp',
+            Date.now().toString()); // Redirect immediately - do NOT await Firebase setTimeout(() => { window.location.href = 'checkout.html'; }, 150); // Fire-and-forget Firebase save saveCart().catch(() => {}); }; window.toggleWishlist = function(id,
+            el) { const idx = wishlist.indexOf(id); if(idx > -1) { wishlist.splice(idx, 1); el.classList.remove('fas', 'active'); el.classList.add('far'); } else { wishlist.push(id); el.classList.remove('far'); el.classList.add('fas', 'active'); gsap.fromTo(el,
+            {scale:1}, {scale:1.4, duration:0.2, yoyo:true, repeat:1}); } localStorage.setItem('cp_wishlist', JSON.stringify(wishlist)); updateWishlistUI(); }; function updateWishlistUI() { document.getElementById('wishlist-badge').innerText = wishlist.length;
+            const container = document.getElementById('wishlist-items-container'); container.innerHTML = wishlist.length === 0 ? `
+            <p style="text-align:center;">Empty</p>` : ''; wishlist.forEach(id => { const p = products.find(x => x.id === id); if(p) { container.innerHTML += `
+            <div class="cart-item"><img src="${p.image}">
+                <div style="flex:1;">
+                    <h4>${p.name}</h4>
+                    <p style="color:var(--gold);">${p.price} DZD</p><button onclick="addToCart(${p.id})" class="btn-gold" style="padding:0.3rem 1rem; border-radius:5px; font-size:0.8rem; margin-top:0.5rem;"><i class="fas fa-cart-plus"></i></button></div>
+                <button onclick="toggleWishlist(${id}, document.querySelector('.heart-${id}'))" class="remove-btn"><i class="fas fa-trash"></i></button>
+            </div>`; } }); } function renderProducts(filter = '') { const grid = document.getElementById('main-product-grid'); grid.innerHTML = ''; const query = filter.toLowerCase(); const filteredProducts = products.filter(p => p.name.toLowerCase().includes(query)
+            || p.brand.toLowerCase().includes(query)); filteredProducts.forEach(p => { const isWished = wishlist.includes(p.id); grid.innerHTML += `
+            <div class="product-card">
+                <div class="img-wrapper">
+                    <i class="heart-${p.id} heart-btn ${isWished ? 'fas active' : 'far'} fa-heart" onclick="toggleWishlist(${p.id}, this)"></i>
+                    <a href="product.html?id=${p.id}"><img src="${p.image}"></a>
+                </div>
+                <div class="product-info">
+                    <p class="product-brand">${p.brand}</p>
+                    <h3 class="product-name"><a href="product.html?id=${p.id}">${p.name}</a></h3>
+                    <div class="product-price">${p.price} DZD</div><button class="add-cart-btn" onclick="addToCart(${p.id}, event)"><i class="fas fa-shopping-bag"></i> ${i18n[currentLang].add_to_cart}</button></div>
+            </div>`; }); setTimeout(() => ScrollTrigger.refresh(), 100); } document.getElementById('product-search').addEventListener('input', (e) => renderProducts(e.target.value)); const overlay = document.getElementById('main-overlay'); window.toggleDrawer
+            = function(id) { const drawer = document.getElementById(id); if(drawer.classList.contains('active')) { drawer.classList.remove('active'); overlay.classList.remove('active'); } else { document.querySelectorAll('.side-drawer').forEach(d => d.classList.remove('active'));
+            drawer.classList.add('active'); overlay.classList.add('active'); if(id === 'cart-drawer') updateCartUI(); // Trigger animation } }; document.getElementById('cart-btn').addEventListener('click', () => toggleDrawer('cart-drawer')); document.getElementById('wishlist-btn').addEventListener('click',
+            () => toggleDrawer('wishlist-drawer')); document.getElementById('burger-btn').addEventListener('click', () => toggleDrawer('nav-drawer')); overlay.addEventListener('click', () => { document.querySelectorAll('.side-drawer').forEach(d => d.classList.remove('active'));
+            overlay.classList.remove('active'); closeQuiz(); }); window.showToast = function(msg, icon) { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.querySelector('i').className = `fas ${icon} toast-icon`;
+            t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }; // ===== QUIZ LOGIC WITH ICONS ===== const quizQuestions = [ { q: 'What occasion are you wearing this for?', q_ar: 'لأي مناسبة سترتدي العطر؟', options: [ {label:'Date
+            Night', label_ar:'موعد غرامي', cat:'Romantic', icon:'fa-moon'}, {label:'Daily Wear', label_ar:'استخدام يومي', cat:'Fresh', icon:'fa-sun'}, {label:'Special Event', label_ar:'مناسبة خاصة', cat:'Luxury', icon:'fa-gem'}, {label:'Night Out', label_ar:'سهرة',
+            cat:'Strong', icon:'fa-fire'} ]}, { q: 'Which scent family appeals to you?', q_ar: 'أي عائلة عطرية تفضل؟', options: [ {label:'Vanilla & Warm', label_ar:'فانيليا ودافئ', cat:'Romantic', icon:'fa-heart'}, {label:'Citrus & Fresh', label_ar:'حمضيات
+            ومنعش', cat:'Fresh', icon:'fa-water'}, {label:'Oud & Woody', label_ar:'عود وخشبي', cat:'Luxury', icon:'fa-tree'}, {label:'Spicy & Bold', label_ar:'حار وقوي', cat:'Strong', icon:'fa-pepper-hot'} ]}, { q: 'What impression do you want to leave?',
+            q_ar: 'ما الانطباع الذي تريد تركه؟', options: [ {label:'Charming & Soft', label_ar:'ساحر وناعم', cat:'Romantic', icon:'fa-feather'}, {label:'Clean & Energetic', label_ar:'نظيف ومنعش', cat:'Fresh', icon:'fa-bolt'}, {label:'Mysterious & Rich',
+            label_ar:'غامض وفخم', cat:'Luxury', icon:'fa-mask'}, {label:'Powerful & Confident', label_ar:'قوي وواثق', cat:'Strong', icon:'fa-crown'} ]} ]; let quizStep = 0; let quizScores = {Romantic:0, Fresh:0, Luxury:0, Strong:0}; window.openQuiz =
+            function() { quizStep = 0; quizScores = {Romantic:0, Fresh:0, Luxury:0, Strong:0}; document.getElementById('quiz-result').style.display = 'none'; document.getElementById('quiz-content').style.display = 'block'; const modal = document.getElementById('quiz-modal');
+            modal.style.opacity = '1'; modal.style.visibility = 'visible'; modal.style.transform = 'translate(-50%,-50%) scale(1)'; overlay.classList.add('active'); showQuizQuestion(); }; window.closeQuiz = function() { const modal = document.getElementById('quiz-modal');
+            modal.style.opacity = '0'; modal.style.visibility = 'hidden'; modal.style.transform = 'translate(-50%,-50%) scale(0.9)'; overlay.classList.remove('active'); }; function showQuizQuestion() { if(quizStep >= quizQuestions.length) { showQuizResult();
+            return; } const q = quizQuestions[quizStep]; document.getElementById('quiz-progress').style.width = ((quizStep / quizQuestions.length) * 100) + '%'; document.getElementById('quiz-question').innerText = currentLang === 'ar' ? q.q_ar : q.q;
+            const optsContainer = document.getElementById('quiz-options'); optsContainer.innerHTML = ''; q.options.forEach(opt => { const btn = document.createElement('button'); btn.style.cssText = 'padding:1rem 1.5rem;border:1px solid var(--glass-border);background:var(--glass-bg);color:#fff;border-radius:12px;font-size:1rem;cursor:pointer;transition:all
+            0.3s;display:inline-flex;align-items:center;gap:0.8rem;width:100%;'; btn.innerHTML = `<i class="fas ${opt.icon}" style="font-size:1.2rem;color:var(--gold);transition:all 0.3s;flex-shrink:0;"></i> <span>${currentLang === 'ar' ? opt.label_ar : opt.label}</span>`;
+            btn.onmouseover = () => { btn.style.borderColor = 'var(--gold)'; btn.style.background = 'rgba(197,165,114,0.15)'; btn.querySelector('i').style.transform = 'scale(1.2) rotate(5deg)'; }; btn.onmouseout = () => { btn.style.borderColor = 'var(--glass-border)';
+            btn.style.background = 'var(--glass-bg)'; btn.querySelector('i').style.transform = 'scale(1) rotate(0)'; }; btn.onclick = () => { btn.style.borderColor = 'var(--gold)'; btn.style.background = 'var(--gold)'; btn.style.color = '#0A192F'; btn.querySelector('i').style.color
+            = '#0A192F'; quizScores[opt.cat]++; quizStep++; setTimeout(() => { gsap.to('#quiz-content', {opacity:0, x: -20, duration:0.2, onComplete: () => { showQuizQuestion(); gsap.fromTo('#quiz-content', {opacity:0, x:20}, {opacity:1, x:0, duration:0.3});
+            }}); }, 200); }; optsContainer.appendChild(btn); }); } function showQuizResult() { document.getElementById('quiz-progress').style.width = '100%'; document.getElementById('quiz-content').style.display = 'none'; document.getElementById('quiz-result').style.display
+            = 'block'; const topCat = Object.entries(quizScores).sort((a,b) => b[1]-a[1])[0][0]; const catIcons = {Romantic:'fa-heart', Fresh:'fa-water', Luxury:'fa-gem', Strong:'fa-crown'}; const catNames = {Romantic: currentLang==='ar'?'رومانسي':'Romantic',
+            Fresh: currentLang==='ar'?'منعش':'Fresh', Luxury: currentLang==='ar'?'فاخر':'Luxury', Strong: currentLang==='ar'?'قوي':'Strong'}; document.getElementById('quiz-cat').innerHTML = `<i class="fas ${catIcons[topCat]}" style="margin-right:0.5rem;"></i>            ${catNames[topCat]}`; const recs = products.filter(p => p.category === topCat).slice(0, 3); const recsContainer = document.getElementById('quiz-recommendations'); recsContainer.innerHTML = ''; recs.forEach(p => { recsContainer.innerHTML +=
+            `
+            <div style="min-width:180px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:12px;padding:1rem;text-align:center;flex-shrink:0;">
+                <a href="product.html?id=${p.id}"><img src="${p.image}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:0.8rem;"></a>
+                <h4 style="font-size:0.9rem;margin-bottom:0.3rem;">${p.name}</h4>
+                <p style="color:var(--gold);font-weight:600;margin-bottom:0.5rem;">${p.price} DZD</p>
+                <button onclick="addToCart(${p.id});closeQuiz()" style="padding:0.5rem 1rem;background:var(--gold);color:#000;border:none;border-radius:20px;font-weight:600;cursor:pointer;transition:0.3s;font-size:0.85rem;"><i class="fas fa-cart-plus" style="margin-right:0.3rem;"></i>${i18n[currentLang].add_to_cart}</button>
+            </div>`; }); gsap.from('#quiz-result', {opacity:0, scale:0.9, duration:0.4}); } // ===== SMOOTH SCROLL NAVIGATION ===== function smoothScrollTo(targetId) { const section = document.getElementById(targetId); if(section) { section.scrollIntoView({
+            behavior: 'smooth', block: 'start' }); } } document.addEventListener('click', function(e) { const scrollLink = e.target.closest('[data-scroll]'); if(scrollLink) { e.preventDefault(); const targetId = scrollLink.getAttribute('data-scroll');
+            smoothScrollTo(targetId); const navDrawer = document.getElementById('nav-drawer'); if(navDrawer && navDrawer.classList.contains('active')) { toggleDrawer('nav-drawer'); } } }); window.addEventListener('DOMContentLoaded', () => { applyLanguage();
+            gsap.registerPlugin(ScrollTrigger, TextPlugin); loadCart(); updateWishlistUI(); gsap.to('.hero-content h1', { y: 0, opacity: 1, duration: 1, delay: 0.5 }); gsap.to('.hero-content p', { opacity: 1, duration: 1, delay: 1 }); gsap.from('.logo',
+            { scale: 0.5, opacity: 0, duration: 1, ease: 'back.out(2)' }); ScrollTrigger.create({ trigger: '.story-sec', start: "top 70%", once: true, onEnter: () => { const typedEl = document.querySelector('.typed-text'); const ogText = typedEl.innerText;
+            typedEl.innerText = ""; gsap.to(typedEl, { text: ogText, duration: 3, ease: "none" }); gsap.utils.toArray('.counter').forEach(count => { let tg = count.getAttribute('data-target'); gsap.to(count, { innerText: tg, duration: 2.5, snap: { innerText:
+            1 }, onUpdate: function(){ count.innerText = Math.ceil(this.targets()[0].innerText); }}); }); } }); gsap.utils.toArray('.product-card').forEach((c) => { gsap.from(c, { scrollTrigger: { trigger: c, start: "top bottom-=50" }, y: 50, opacity:
+            0, duration: 0.6 }); }); window.addEventListener('scroll', () => { if(window.scrollY > 50) document.querySelector('nav').classList.add('scrolled'); else document.querySelector('nav').classList.remove('scrolled'); }); const cursor = document.querySelector('.cursor');
+            document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }); document.addEventListener('mouseover', e => { if(e.target.closest('a, button, .heart-btn, .nav-icons i')) cursor.classList.add('cursor-grow');
+            else cursor.classList.remove('cursor-grow'); }); }); function initThree() { const canvas = document.getElementById('three-canvas'); const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight,
+            0.1, 1000); const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true }); renderer.setSize(window.innerWidth, window.innerHeight); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); const isMobile = window.innerWidth
+            <=7 68; const P_COUNT=i sMobile ? 30 : 150; const geom=n ew THREE.BufferGeometry(); const pos=n ew Float32Array(P_COUNT * 3); for(let i=0; i < P_COUNT*3; i++) pos[i]=( Math.random() - 0.5) * 15; geom.setAttribute( 'position', new THREE.BufferAttribute(pos,
+                3)); const matCanvas=d ocument.createElement( 'canvas'); matCanvas.width=1 6; matCanvas.height=1 6; const ctx=m atCanvas.getContext( '2d'); ctx.beginPath(); ctx.arc(8, 8, 6, 0, Math.PI*2); ctx.fillStyle='#C5A572' ; ctx.fill(); const material=n
+                ew THREE.PointsMaterial({ size: 0.1, map: new THREE.CanvasTexture(matCanvas), transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending }); const particles=n ew THREE.Points(geom, material); scene.add(particles); camera.position.z=4
+                ; let mx=0 , my=0 ; document.addEventListener( 'mousemove', (e)=> { mx = e.clientX/window.innerWidth - 0.5; my = e.clientY/window.innerHeight - 0.5; }); function animate() { requestAnimationFrame(animate); particles.rotation.y += 0.001; particles.rotation.x += 0.0005; if(!isMobile) { camera.position.x +=
+                (mx*2 - camera.position.x) * 0.05; camera.position.y += (-my*2 - camera.position.y) * 0.05; camera.lookAt(scene.position); } renderer.render(scene, camera); } animate(); window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight;
+                camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }); } initThree();
+    </script>
+</body>
+
+</html>

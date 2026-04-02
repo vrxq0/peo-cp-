@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carnaval Perfume - Checkout</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg-color: #0A192F; --text-color: #F5F2EB; --gold: #C5A572; --glass-bg: rgba(255,255,255,0.05); --glass-border: rgba(255,255,255,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+        h1, h2, h3, h4, .playfair { font-family: 'Playfair Display', serif; }
+        a { color: inherit; text-decoration: none; }
+        .glass { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; }
+
+        /* Navigation */
+        nav { padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); position: relative; z-index: 10; }
+        .logo { font-size: 2rem; font-weight: 700; color: var(--gold); font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+
+        /* Breadcrumb */
+        .breadcrumb { padding: 2rem 5% 0; display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem; color: #ccc; }
+        .breadcrumb span { opacity: 0.5; }
+        .breadcrumb span.active { opacity: 1; color: var(--gold); font-weight: 500; }
+        .breadcrumb i { font-size: 0.7rem; opacity: 0.3; }
+
+        /* Layout */
+        .checkout-container { padding: 2rem 5% 5rem; display: flex; gap: 5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; opacity: 0; flex: 1; }
+        .form-sec { flex: 1.5; }
+        .summary-wrapper { flex: 1; position: relative; height: 100%; }
+
+        /* Section Headings */
+        .section-header { font-size: 2rem; margin-bottom: 2.5rem; position: relative; display: inline-block; }
+        .section-header::after { content: ''; position: absolute; bottom: -8px; right: 0; width: 60px; height: 3px; background: var(--gold); border-radius: 3px; transition: width 0.4s; }
+        .section-header:hover::after { width: 100%; }
+        html[dir="rtl"] .section-header::after { left: 0; right: auto; }
+
+        /* Form Grid */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        .form-group.full-width { grid-column: span 2; }
+        
+        .form-group { display: flex; flex-direction: column; position: relative; }
+        .form-group label { margin-bottom: 0.5rem; font-size: 0.95rem; color: #bbb; transition: color 0.3s; font-weight: 500; }
+        .form-group input, .form-group select { padding: 1.2rem; border-radius: 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-family: 'Inter', sans-serif; font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; }
+        .form-group select option { background: var(--bg-color); color: #fff; }
+        
+        /* Input Micro-interactions */
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--gold); background: rgba(197, 165, 114, 0.05); transform: scale(1.02); box-shadow: 0 0 15px rgba(197, 165, 114, 0.2); }
+        .form-group:focus-within label { color: var(--gold); transform: translateY(-3px); }
+        
+        /* Validation Checkmark */
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-wrapper input, .input-wrapper select { flex: 1; }
+        .check-icon { position: absolute; left: 1rem; color: #27ae60; opacity: 0; transform: scale(0.5); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        html[dir="ltr"] .check-icon { left: auto; right: 1rem; }
+        .form-group.valid .check-icon { opacity: 1; transform: scale(1); }
+        .form-group.valid input, .form-group.valid select { border-color: #27ae60; }
+
+        /* Payment Methods */
+        .payment-methods { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+        .method { display: flex; align-items: center; gap: 1.2rem; padding: 1.5rem; border: 1px solid var(--glass-border); border-radius: 12px; cursor: pointer; transition: all 0.3s; background: rgba(255,255,255,0.02); }
+        .method:hover, .method.selected { border-color: var(--gold); background: rgba(197, 165, 114, 0.1); transform: translateX(-5px); }
+        html[dir="ltr"] .method:hover, html[dir="ltr"] .method.selected { transform: translateX(5px); }
+        .method input[type="radio"] { accent-color: var(--gold); transform: scale(1.2); }
+        .method h4 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .method p { font-size: 0.85rem; color: #aaa; }
+
+        /* Summary Card */
+        .summary-card { padding: 2.5rem; position: sticky; top: 100px; z-index: 2; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(197, 165, 114, 0.3); }
+        .cart-item { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; }
+        .cart-item:hover { transform: translateX(-5px); }
+        html[dir="ltr"] .cart-item:hover { transform: translateX(5px); }
+        .cart-item img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .cart-item-info { flex: 1; }
+        .cart-item-info h4 { font-size: 1rem; letter-spacing: 0.5px; }
+        .cart-item-info p { font-size: 0.85rem; color: #aaa; margin-top: 0.3rem; }
+        .cart-item-price { font-weight: 600; color: var(--gold); font-size: 1.1rem; }
+        
+        .totals { margin-top: 2rem; padding-top: 1rem; }
+        .totals-row { display: flex; justify-content: space-between; margin-bottom: 1.2rem; font-size: 1.05rem; }
+        .totals-row.grand { font-size: 1.5rem; font-weight: bold; color: var(--gold); border-top: 1px dashed rgba(197, 165, 114, 0.3); padding-top: 1.5rem; margin-top: 1rem; }
+
+        /* Empty State */
+        .empty-state { text-align: center; margin: 5rem auto; width: 100%; display: none; }
+        .empty-state i { font-size: 5rem; color: rgba(197, 165, 114, 0.3); margin-bottom: 1rem; }
+        .empty-state h2 { font-size: 2rem; margin-bottom: 1rem; }
+        
+        /* Submit Button */
+        .btn-submit { width: 100%; background: linear-gradient(135deg, #e0bc84 0%, #C5A572 100%); color: #000; font-weight: bold; padding: 1.2rem; border: none; border-radius: 12px; font-size: 1.2rem; margin-top: 2.5rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; justify-content: center; align-items: center; min-height: 60px; box-shadow: 0 10px 20px rgba(197, 165, 114, 0.2); }
+        .btn-submit:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(197, 165, 114, 0.4); text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+        
+        .btn-return { background: transparent; color: #fff; border: 1px solid var(--gold); margin-top: 2rem; padding: 1rem 3rem; display: inline-block; border-radius: 30px; transition: 0.3s; }
+        .btn-return:hover { background: var(--gold); color: #000; }
+
+        .spinner { animation: spin 1s linear infinite; font-size: 1.5rem; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Success Modal – Glassmorphic */
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,25,47,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display:flex; justify-content:center; align-items:center; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: #102B3F; padding: 2.5rem; border-radius: 32px; text-align: center; max-width: 500px; width: 90%; border-top: 4px solid var(--gold); border-left: 1px solid rgba(197,165,114,0.15); border-right: 1px solid rgba(197,165,114,0.15); border-bottom: 1px solid rgba(197,165,114,0.15); box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 40px rgba(197,165,114,0.05); animation: fadeSlideUp 0.4s ease-out backwards; }
+        .modal-overlay.active .modal-content { animation: fadeSlideUp 0.4s ease-out forwards; }
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-icon { font-size: 4rem; color: var(--gold); margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(197,165,114,0.5)); animation: iconPulse 2s ease-in-out infinite; }
+        @keyframes iconPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        .modal-content h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--gold); }
+        .modal-content .modal-subtitle { font-size: 1rem; color: #aaa; margin-bottom: 1.5rem; }
+        .order-details-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: left; }
+        .order-details-box .detail-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; color: #ccc; }
+        .order-details-box .detail-row:last-child { border-bottom: none; }
+        .order-details-box .detail-row .label { color: #888; }
+        .order-details-box .detail-row .value { color: #fff; font-weight: 500; }
+        .order-details-box .detail-row.total-row { border-top: 1px dashed rgba(197,165,114,0.3); margin-top: 0.5rem; padding-top: 1rem; }
+        .order-details-box .detail-row.total-row .value { color: var(--gold); font-size: 1.2rem; font-weight: bold; }
+        .order-id-badge { display: inline-block; background: rgba(197,165,114,0.15); border: 1px solid rgba(197,165,114,0.3); color: var(--gold); padding: 0.5rem 1.5rem; border-radius: 30px; font-family: monospace; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 1.5rem; }
+        .modal-close-btn { width: 100%; background: linear-gradient(135deg, #e0bc84, #C5A572); color: #000; font-weight: bold; padding: 1rem; border: none; border-radius: 15px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 20px rgba(197,165,114,0.3); }
+        .modal-close-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(197,165,114,0.5); }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #fff; color: #0A192F; padding: 1rem 2rem; border-radius: 50px; font-weight: 600; z-index: 3000; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.error { background: #ff4757; color: #fff; }
+
+        /* 3D Canvas Background for Summary */
+        #summary-canvas { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140%; height: 140%; pointer-events: none; z-index: 0; opacity: 0.6; }
+
+        /* FOOTER */
+        .footer { position: relative; margin-top: auto; background: #071324; text-align: center; padding: 3rem 1rem 2rem; border-top: 1px solid var(--glass-border); }
+        .footer-text { font-size: 1rem; color: #ccc; z-index: 2; position: relative; font-weight: 500;}
+        .wave-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 6px; overflow: hidden; }
+        .animated-wave { width: 200%; height: 100%; background: linear-gradient(90deg, #C5A572, #e0bc84, #f5f2eb, #e0bc84, #C5A572); background-size: 50% 100%; animation: waveMove 3s linear infinite; }
+        @keyframes waveMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        @media (max-width: 900px) { 
+            .checkout-container { flex-direction: column-reverse; padding: 2rem 5%; gap: 3rem; } 
+            .form-grid { grid-template-columns: 1fr; } 
+            .form-group.full-width { grid-column: span 1; }
+            #summary-canvas { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">Carnaval Perfume</a>
+        <a href="index.html" style="font-weight: 500; font-size: 1.1rem; transition: 0.3s;" onmouseover="this.style.color='#C5A572'" onmouseout="this.style.color='inherit'">
+            <i class="fas fa-arrow-left" data-i18n-prop="className" data-i18n="back_icon" style="margin-right:0.5rem; margin-left: 0.5rem;"></i>
+            <span data-i18n="nav_home">Home</span>
+        </a>
+    </nav>
+
+    <div class="breadcrumb">
+        <span data-i18n="bc_cart">Cart</span>
+        <i class="fas fa-chevron-right" data-i18n-prop="className" data-i18n="bc_icon"></i>
+        <span class="active" data-i18n="bc_checkout">Checkout</span>
+        <i class="fas fa-chevron-right" data-i18n-prop="className" data-i18n="bc_icon"></i>
+        <span data-i18n="bc_confirm">Confirmation</span>
+    </div>
+
+    <!-- Main Active View -->
+    <div class="checkout-container" id="main-container">
+        
+        <div class="empty-state" id="empty-state">
+            <i class="fas fa-box-open"></i>
+            <h2 class="playfair" data-i18n="empty_cart">Your cart is empty</h2>
+            <p data-i18n="empty_suggest">Looks like you haven't added any luxury perfumes yet.</p>
+            <a href="index.html" class="btn-return" data-i18n="return_shop">Return to Shop</a>
+        </div>
+
+        <div class="form-sec" id="form-section">
+            <h2 class="playfair section-header" data-i18n="del_info">Delivery Information</h2>
+            <form id="checkout-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label data-i18n="fname">First Name</label>
+                        <div class="input-wrapper"><input type="text" id="fname" required><i class="fas fa-check check-icon"></i></div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="lname">Last Name</label>
+                        <div class="input-wrapper"><input type="text" id="lname" required><i class="fas fa-check check-icon"></i></div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="phone">Phone Number</label>
+                        <div class="input-wrapper"><input type="tel" id="phone" required placeholder="0550000000" pattern="[0-9]{10}"><i class="fas fa-check check-icon"></i></div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="wilaya">Wilaya / Region</label>
+                        <div class="input-wrapper">
+                            <select id="wilaya" required><option value="" data-i18n="select_wilaya">Select Region</option></select>
+                            <i class="fas fa-check check-icon"></i>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label data-i18n="address">Full Address</label>
+                        <div class="input-wrapper"><input type="text" id="address" required autocomplete="street-address"><i class="fas fa-check check-icon"></i></div>
+                    </div>
+                </div>
+
+                <h2 class="playfair section-header" style="margin-top: 1rem;" data-i18n="pay_method">Payment Method</h2>
+                <div class="payment-methods">
+                    <label class="method selected">
+                        <input type="radio" name="payment" value="cod" checked>
+                        <div><h4 data-i18n="cod_title">Cash on Delivery (COD)</h4><p data-i18n="cod_desc">Pay safely with cash upon delivery.</p></div>
+                    </label>
+                    <label class="method">
+                        <input type="radio" name="payment" value="card">
+                        <div><h4 data-i18n="card_title">Credit Card / CIB</h4><p data-i18n="card_desc">(Simulated) 100% secure electronic payment.</p></div>
+                    </label>
+                </div>
+                <button type="submit" class="btn-submit" id="submit-btn" data-i18n="confirm_order">Confirm Order</button>
+            </form>
+        </div>
+
+        <div class="summary-wrapper" id="summary-section">
+            <canvas id="summary-canvas"></canvas>
+            <div class="summary-card glass" id="summary-card">
+                <h3 class="playfair" data-i18n="order_summary" style="margin-bottom: 2rem; font-size: 1.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">Order Summary</h3>
+                <div id="cart-summary"></div>
+                <div class="totals">
+                    <div class="totals-row"><span data-i18n="subtotal">Subtotal</span><span id="subtotal">0 DZD</span></div>
+                    <div class="totals-row"><span data-i18n="delivery_fee">Delivery Fee</span><span>15 DZD</span></div>
+                    <div class="totals-row grand"><span class="playfair" data-i18n="total">Total</span><span id="total" data-target="0">0 DZD</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="orderSuccessModal">
+        <div class="modal-content">
+            <i class="fas fa-check-circle modal-icon"></i>
+            <h2 class="playfair" id="modal-title">Order Confirmed!</h2>
+            <p class="modal-subtitle" id="modal-subtitle">Thank you for choosing Carnaval Perfume</p>
+            <div class="order-id-badge" id="order-id-display"></div>
+            <div class="order-details-box" id="modal-order-details">
+                <!-- Populated dynamically -->
+            </div>
+            <button class="modal-close-btn" onclick="window.location.href='index.html'" id="modal-close-btn">Return Home</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><i class="fas fa-info-circle"></i> <span id="toast-msg"></span></div>
+
+    <footer class="footer">
+        <div class="footer-text">© Carnaval Perfume 2025 – فن العطور الفاخرة</div>
+        <div class="wave-container"><div class="animated-wave"></div></div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        // Multilingual init
+        const i18n = {
+            ar: { nav_home:"العودة للتسوق", back_icon:"fas fa-arrow-right", bc_cart:"السلة", bc_icon:"fas fa-chevron-left", bc_checkout:"الدفع", bc_confirm:"تأكيد الطلب", empty_cart:"سلة مشترياتك فارغة", empty_suggest:"لم تقم بإضافة أي عطور فاخرة بعد.", return_shop:"العودة للتسوق", return_home:"العودة للرئيسية", del_info:"معلومات التوصيل", fname:"الاسم الأول", lname:"الاسم الأخير", phone:"رقم الهاتف", wilaya:"الولاية", select_wilaya:"اختر الولاية", address:"العنوان الكامل", pay_method:"طريقة الدفع", cod_title:"الدفع عند الاستلام (COD)", cod_desc:"الدفع نقداً بكل أمان عند استلام طلبيتك.", card_title:"البطاقة الذهبية / CIB", card_desc:"(محاكاة) دفع إلكتروني آمن 100%.", confirm_order:"تأكيد الطلب", order_summary:"ملخص الطلب", subtotal:"المجموع الفرعي", delivery_fee:"مصاريف التوصيل", total:"المجموع الكلي", success_title:"تم تأكيد طلبك بنجاح!", success_desc:"شكراً لاختيارك كرنفال. رقم طلبيتك هو:", success_followup:"سنتصل بك قريباً." },
+            en: { nav_home:"Return to Shop", back_icon:"fas fa-arrow-left", bc_cart:"Cart", bc_icon:"fas fa-chevron-right", bc_checkout:"Checkout", bc_confirm:"Confirmation", empty_cart:"Your cart is empty", empty_suggest:"Looks like you haven't added any luxury perfumes yet.", return_shop:"Return to Shop", return_home:"Return to Home", del_info:"Delivery Information", fname:"First Name", lname:"Last Name", phone:"Phone Number", wilaya:"Wilaya / Region", select_wilaya:"Select Region", address:"Full Address", pay_method:"Payment Method", cod_title:"Cash on Delivery (COD)", cod_desc:"Pay safely with cash upon delivery.", card_title:"Credit Card / CIB", card_desc:"(Simulated) 100% secure electronic payment.", confirm_order:"Confirm Order", order_summary:"Order Summary", subtotal:"Subtotal", delivery_fee:"Delivery Fee", total:"Total", success_title:"Order Confirmed!", success_desc:"Thank you for choosing Carnaval. Your order number is:", success_followup:"We will contact you shortly." }
+        };
+        let currentLang = localStorage.getItem('cp_lang') || 'en';
+        document.documentElement.lang = currentLang; document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if(i18n[currentLang][key]) { if(el.getAttribute('data-i18n-prop') === 'className') { el.className = i18n[currentLang][key]; } else { el.innerHTML = i18n[currentLang][key]; } }
+        });
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB",
+            authDomain: "carnaval-perfume.firebaseapp.com",
+            projectId: "carnaval-perfume",
+            storageBucket: "carnaval-perfume.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
+        let db;
+        try { const app = initializeApp(firebaseConfig); db = getFirestore(app); } catch(e) { console.warn("Firebase init failed, using localStorage fallback.", e); }
+
+        const wilayas = ["أدرار", "الشلف", "الأغواط", "أم البواقي", "باتنة", "بجاية", "بسكرة", "بشار", "البليدة", "البويرة", "تمنراست", "تبسة", "تلمسان", "تيارت", "تيزي وزو", "الجزائر", "الجلفة", "جيجل", "سطيف", "سعيدة", "سكيكدة", "سيدي بلعباس", "عنابة", "قالمة", "قسنطينة", "المدية", "مستغانم", "المسيلة", "معسكر", "ورقلة", "وهران", "البيض", "إليزي", "برج بوعريريج", "بومرداس", "الطارف", "تندوف", "تسمسيلت", "الوادي", "خنشلة", "سوق أهراس", "تيبازة", "ميلة", "عين الدفلى", "النعامة", "عين تموشنت", "غرداية", "غليزان", "تيميمون", "برج باجي مختار", "أولاد جلال", "بني عباس", "إن صالح", "إن قزام", "تقرت", "جانت", "المغير", "المنيعة"];
+        const wSelect = document.getElementById('wilaya');
+        wilayas.forEach((w, i) => { const opt = document.createElement('option'); opt.value = w; opt.innerText = currentLang === 'ar' ? `${i+1} - ${w}` : `${i+1} - ${w}`; wSelect.appendChild(opt); });
+
+        // Micro-interaction Form Validation
+        const validateInput = (el) => {
+            const fg = el.closest('.form-group');
+            if(el.checkValidity() && el.value.trim() !== '') { fg.classList.add('valid'); } else { fg.classList.remove('valid'); }
+        };
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('input', () => validateInput(el));
+            el.addEventListener('blur', () => validateInput(el));
+        });
+
+        document.querySelectorAll('input[name="payment"]').forEach(el => {
+            el.addEventListener('change', (e) => {
+                document.querySelectorAll('.method').forEach(m => m.classList.remove('selected'));
+                e.target.closest('.method').classList.add('selected');
+            });
+        });
+
+        let cart = [];
+        let sessionId = localStorage.getItem('cp_session');
+
+        async function init() {
+            if(!sessionId) sessionId = 'unknown';
+
+            // 1. PRIORITY: Read from dedicated checkoutCart key (set by Proceed to Checkout button)
+            const checkoutCartRaw = localStorage.getItem('checkoutCart');
+            const lsCart = JSON.parse(localStorage.getItem('cp_cart_fallback') || '[]');
+            
+            if(checkoutCartRaw) {
+                try { cart = JSON.parse(checkoutCartRaw); } catch(e) { cart = []; }
+            }
+            
+            // 2. Fallback: try cp_cart_fallback
+            if(cart.length === 0 && lsCart.length > 0) {
+                cart = lsCart;
+            }
+            
+            // 3. Last resort: try Firebase with timeout
+            if(cart.length === 0) {
+                try {
+                    if(db) {
+                        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000));
+                        const snap = await Promise.race([getDoc(doc(db, "carts", sessionId)), timeoutPromise]);
+                        if(snap.exists()) cart = snap.data().items || [];
+                    }
+                } catch(e) { /* Firebase failed or timed out */ }
+            }
+
+            if(cart.length === 0) { 
+                document.getElementById('form-section').style.display = 'none';
+                document.getElementById('summary-section').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
+                gsap.to('#main-container', { opacity: 1, duration: 0.1 });
+                return; 
+            }
+
+            const container = document.getElementById('cart-summary');
+            let subtotal = 0;
+            cart.forEach(item => {
+                subtotal += item.price * item.qty;
+                const priceLbl = currentLang === 'ar' ? 'الكمية:' : 'Qty:';
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.img}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4><p>${priceLbl} ${item.qty}</p>
+                        </div>
+                        <div class="cart-item-price">${item.price * item.qty} DZD</div>
+                    </div>`;
+            });
+            document.getElementById('subtotal').innerText = `${subtotal} DZD`; 
+            
+            const totalEl = document.getElementById('total');
+            totalEl.setAttribute('data-target', subtotal + 15);
+            
+            gsap.to(totalEl, { innerText: subtotal + 15, duration: 2, delay: 0.5, snap: { innerText: 1 }, onUpdate: function(){ totalEl.innerText = Math.ceil(this.targets()[0].innerText) + " DZD"; }});
+            
+            gsap.to('#main-container', { opacity: 1, duration: 0.1 });
+            gsap.from('#form-section', { y: 50, opacity: 0, duration: 1, ease: 'power3.out' });
+            gsap.from('#summary-card', { y: 80, opacity: 0, duration: 1, delay: 0.2, ease: 'power3.out' });
+            gsap.to('#summary-card', { y: "+=10", duration: 3, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 1.2 });
+        }
+        init();
+
+        // ===== TOAST =====
+        function showToast(msg, isError = false) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            t.className = isError ? 'toast error show' : 'toast show';
+            setTimeout(() => { t.className = 'toast'; }, 4000);
+        }
+
+        // ===== FIREBASE ORDER FUNCTIONS =====
+        async function saveOrderToFirebase(orderData) {
+            if(!db) throw new Error('No Firebase connection');
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase timeout')), 5000));
+            await Promise.race([
+                setDoc(doc(db, "orders", orderData.id), orderData),
+                timeoutPromise
+            ]);
+            return true;
+        }
+
+        async function clearCartAfterOrder(sid) {
+            // Always clear localStorage immediately
+            localStorage.removeItem('checkoutCart');
+            localStorage.setItem('cp_cart_fallback', '[]');
+            localStorage.removeItem('checkoutTimestamp');
+            // Try Firebase cart clear (fire-and-forget with timeout)
+            try {
+                if(db) {
+                    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000));
+                    await Promise.race([setDoc(doc(db, "carts", sid), { items: [] }), timeoutPromise]);
+                }
+            } catch(e) { /* Firebase clear failed - localStorage is already cleaned */ }
+        }
+
+        function showSuccessModal(customerData, total, orderId) {
+            const isAr = currentLang === 'ar';
+
+            document.getElementById('modal-title').innerText = isAr ? 'تم تأكيد طلبك بنجاح!' : 'Order Confirmed!';
+            document.getElementById('modal-subtitle').innerText = isAr ? 'شكراً لاختيارك كرنفال للعطور' : 'Thank you for choosing Carnaval Perfume';
+            document.getElementById('order-id-display').innerText = orderId;
+            document.getElementById('modal-close-btn').innerText = isAr ? 'العودة للرئيسية' : 'Return Home';
+
+            const detailsBox = document.getElementById('modal-order-details');
+            detailsBox.innerHTML = `
+                <div class="detail-row">
+                    <span class="label">${isAr ? 'الاسم' : 'Name'}</span>
+                    <span class="value">${customerData.fname} ${customerData.lname}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">${isAr ? 'الهاتف' : 'Phone'}</span>
+                    <span class="value">${customerData.phone}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">${isAr ? 'الولاية' : 'Region'}</span>
+                    <span class="value">${customerData.wilaya}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">${isAr ? 'العنوان' : 'Address'}</span>
+                    <span class="value">${customerData.address}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">${isAr ? 'الدفع' : 'Payment'}</span>
+                    <span class="value">${customerData.method === 'cod' ? (isAr ? 'عند الاستلام' : 'Cash on Delivery') : (isAr ? 'بطاقة إلكترونية' : 'Credit Card')}</span>
+                </div>
+                <div class="detail-row total-row">
+                    <span class="label">${isAr ? 'المجموع الكلي' : 'Total'}</span>
+                    <span class="value">${total} DZD</span>
+                </div>
+            `;
+
+            document.getElementById('orderSuccessModal').classList.add('active');
+
+            // Update breadcrumb
+            document.querySelectorAll('.breadcrumb span').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.breadcrumb span')[2].classList.add('active');
+
+            // Confetti celebration
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#C5A572', '#ffffff', '#0A192F'] });
+            setTimeout(() => confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#C5A572'] }), 200);
+            setTimeout(() => confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#C5A572'] }), 400);
+        }
+
+        // ===== FORM SUBMISSION =====
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = '<i class="fas fa-spinner spinner"></i>'; btn.disabled = true;
+
+            const cInfo = {
+                fname: document.getElementById('fname').value,
+                lname: document.getElementById('lname').value,
+                phone: document.getElementById('phone').value,
+                wilaya: document.getElementById('wilaya').value,
+                address: document.getElementById('address').value,
+                method: document.querySelector('input[name="payment"]:checked').value
+            };
+
+            const subtotal = cart.reduce((a, b) => a + (b.price * b.qty), 0);
+            const total = subtotal + 15;
+            const orderRefId = `ORD-${Date.now().toString().slice(-6)}`;
+            const order = {
+                id: orderRefId, customerInfo: cInfo, items: cart,
+                subtotal, deliveryFee: 15, total,
+                status: 'pending', timestamp: Date.now(), sessionId
+            };
+
+            // Small delay for UX feedback
+            await new Promise(r => setTimeout(r, 400));
+
+            let firebaseSaved = false;
+            try {
+                await saveOrderToFirebase(order);
+                firebaseSaved = true;
+            } catch(err) {
+                console.warn('Firebase order save failed, using localStorage fallback:', err.message);
+            }
+
+            // Always save to localStorage as fallback/backup
+            let mockOrders = JSON.parse(localStorage.getItem('cp_orders_fallback') || '[]');
+            mockOrders.push(order);
+            localStorage.setItem('cp_orders_fallback', JSON.stringify(mockOrders));
+
+            // Clear cart from all sources
+            await clearCartAfterOrder(sessionId);
+            cart = [];
+
+            // Show the success modal with customer details
+            showSuccessModal(cInfo, total, orderRefId);
+        });
+
+        function initThreeJS() {
+            if(window.innerWidth <= 900) return;
+            const canvas = document.getElementById('summary-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+            const geometry = new THREE.TorusKnotGeometry( 2.5, 0.05, 100, 16 );
+            const material = new THREE.MeshBasicMaterial( { color: 0xC5A572, transparent: true, opacity: 0.15, wireframe: true } );
+            const torusKnot = new THREE.Mesh( geometry, material );
+            scene.add( torusKnot );
+            
+            const geometry2 = new THREE.TorusGeometry( 3.5, 0.02, 16, 100 );
+            const material2 = new THREE.MeshBasicMaterial( { color: 0xC5A572, transparent: true, opacity: 0.2 } );
+            const torus = new THREE.Mesh( geometry2, material2 );
+            torus.rotation.x = Math.PI/2;
+            scene.add( torus );
+
+            camera.position.z = 8;
+            function animate() {
+                requestAnimationFrame(animate);
+                torusKnot.rotation.x += 0.001; torusKnot.rotation.y += 0.002;
+                torus.rotation.z -= 0.001; torus.rotation.x += 0.001;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+        initThreeJS();
+        window.addEventListener('resize', initThreeJS);
+
+    </script>
+</body>
+</html>

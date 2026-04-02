@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carnaval Perfume - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         :root {
+            --bg-color: #0A192F;
+            --text-color: #F5F2EB;
+            --gold: #C5A572;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4,
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+        }
+        
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-box {
+            padding: 3rem;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .login-box input {
+            margin: 1rem 0;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid var(--gold);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            text-align: center;
+        }
+        
+        .login-box button {
+            background: var(--gold);
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #000;
+        }
+        
+        .login-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(197, 165, 114, 0.3);
+        }
+        
+        nav {
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .dashboard {
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            padding: 1rem 2rem;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .search-box {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: #fff;
+        }
+        
+        .btn-action {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            background: var(--gold);
+            color: #000;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+        
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+            text-align: left;
+        }
+        
+        th,
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        th {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #fff;
+            display: inline-block;
+        }
+        
+        .status-pending {
+            background: #f39c12;
+        }
+        
+        .status-confirmed {
+            background: #3498db;
+        }
+        
+        .status-shipped {
+            background: #9b59b6;
+        }
+        
+        .status-delivered {
+            background: #2ecc71;
+        }
+        
+        .status-cancelled {
+            background: #e74c3c;
+        }
+        
+        select.status-select {
+            background: #0A192F;
+            color: #fff;
+            border: 1px solid var(--glass-border);
+            padding: 0.4rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .mobile-cards {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .order-card {
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+        
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.5rem;
+        }
+        
+        .order-card-detail {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        /* FOOTER */
+        
+        .footer {
+            position: relative;
+            margin-top: 3rem;
+            background: #071324;
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            border-top: 1px solid var(--glass-border);
+            width: 100%;
+        }
+        
+        .footer-text {
+            font-size: 1rem;
+            color: #ccc;
+            z-index: 2;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .animated-wave {
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, #C5A572, #e0bc84, #f5f2eb, #e0bc84, #C5A572);
+            background-size: 50% 100%;
+            animation: waveMove 3s linear infinite;
+        }
+        
+        @keyframes waveMove {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .table-wrapper {
+                display: none;
+            }
+            .mobile-cards {
+                display: flex;
+            }
+            .controls {
+                flex-wrap: wrap;
+            }
+            .btn-action {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="login-overlay">
+        <div class="login-box glass">
+            <h2 class="playfair">Carnaval Admin</h2>
+            <form id="login-form">
+                <input type="password" id="password" placeholder="Password (admin123)" required>
+                <button type="submit">Login</button>
+            </form>
+            <p id="login-err" style="color:#ff4757; margin-top:1rem; display:none;">Incorrect Password</p>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo">Carnaval Admin</div>
+        <a href="index.html" style="color:var(--gold);"><i class="fas fa-store"></i> Return to Shop</a>
+    </nav>
+
+    <div class="dashboard" style="display:none;" id="dashboard">
+        <h2 class="playfair" style="margin-bottom: 1rem;">Order Management Dashboard</h2>
+
+        <div class="stats" id="stats-container">
+            <div class="stat-card glass">
+                <h3 id="stat-total">0</h3>
+                <p>Total Orders</p>
+            </div>
+            <div class="stat-card glass">
+                <h3 id="stat-pending">0</h3>
+                <p>Pending</p>
+            </div>
+            <div class="stat-card glass">
+                <h3 id="stat-confirmed">0</h3>
+                <p>Confirmed</p>
+            </div>
+            <div class="stat-card glass">
+                <h3 id="stat-shipped">0</h3>
+                <p>Shipped</p>
+            </div>
+            <div class="stat-card glass">
+                <h3 id="stat-delivered">0</h3>
+                <p>Delivered</p>
+            </div>
+        </div>
+
+        <div class="header-actions" style="margin-top: 2rem;">
+            <div class="controls">
+                <input type="text" id="search" class="search-box" placeholder="Search by name, phone, or order ID...">
+                <button class="btn-action" onclick="fetchOrders()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button class="btn-action" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+            </div>
+        </div>
+
+        <div class="table-wrapper glass">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Wilaya</th>
+                        <th>Items</th>
+                        <th>Total (DZD)</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-tbody"></tbody>
+            </table>
+        </div>
+        <div class="mobile-cards" id="orders-cards"></div>
+    </div>
+
+    <!-- FOOTER WITH ANIMATED WAVE -->
+    <footer class="footer">
+        <div class="footer-text">© Carnaval Perfume 2025 – فن العطور الفاخرة</div>
+        <div class="wave-container">
+            <div class="animated-wave"></div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"; import { getFirestore, collection, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"; // REAL FIREBASE
+        CONFIG const firebaseConfig = { apiKey: "AIzaSyCLbxqMBpPbqx7LpXQlLjp1QVI1L8d725Q", authDomain: "carnaval-perfume.firebaseapp.com", projectId: "carnaval-perfume", storageBucket: "carnaval-perfume.firebasestorage.app", messagingSenderId: "43912886925",
+        appId: "1:43912886925:web:069a40991c1e97b96140c4", measurementId: "G-F939TLVE9Z" }; let db; try { const app = initializeApp(firebaseConfig); db = getFirestore(app); } catch(e) { console.warn("Firebase limited setup."); } const loginOverlay = document.getElementById('login-overlay');
+        const dashboard = document.getElementById('dashboard'); if(localStorage.getItem('admin_logged') === 'true') { loginOverlay.style.display = 'none'; dashboard.style.display = 'block'; fetchOrders(); } document.getElementById('login-form').addEventListener('submit',
+        (e) => { e.preventDefault(); if(document.getElementById('password').value === 'admin123') { localStorage.setItem('admin_logged', 'true'); loginOverlay.style.display = 'none'; dashboard.style.display = 'block'; fetchOrders(); } else document.getElementById('login-err').style.display
+        = 'block'; }); let allOrders = []; window.fetchOrders = async function() { let data = []; try { if(db) { const q = query(collection(db, "orders"), orderBy("timestamp", "desc")); const snap = await getDocs(q); snap.forEach(d => { data.push({ id:
+        d.id, ...d.data() }); }); } else throw new Error("Fallback required"); } catch(e) { data = JSON.parse(localStorage.getItem('cp_orders_fallback') || '[]'); data.sort((a,b) => b.timestamp - a.timestamp); } allOrders = data; renderOrders(allOrders);
+        } function getStatusColor(status) { const map = { 'pending': 'status-pending', 'confirmed': 'status-confirmed', 'shipped': 'status-shipped', 'delivered': 'status-delivered', 'cancelled': 'status-cancelled' }; return map[status] || 'status-pending';
+        } function getStatusText(status) { const map = { 'pending': 'Pending', 'confirmed': 'Confirmed', 'shipped': 'Shipped', 'delivered': 'Delivered', 'cancelled': 'Cancelled' }; return map[status] || status; } function renderOrders(ordersData) { const
+        tbody = document.getElementById('orders-tbody'); const cards = document.getElementById('orders-cards'); tbody.innerHTML = ''; cards.innerHTML = ''; let stats = { total: ordersData.length, pending:0, confirmed:0, shipped:0, delivered:0 }; ordersData.forEach(o
+        => { if(stats[o.status] !== undefined) stats[o.status]++; const c = o.customerInfo || {}; const d = new Date(o.timestamp).toLocaleString(); const itemsStr = (o.items || []).map(i => `${i.qty}x ${i.name}`).join('<br>'); const rawItemsStr
+        = (o.items || []).map(i => `${i.qty}x ${i.name}`).join(' | '); tbody.innerHTML += `
+        <tr>
+            <td>${o.id}</td>
+            <td style="font-size:0.8rem; color:#aaa;">${d}</td>
+            <td>${c.fname} ${c.lname}</td>
+            <td>${c.phone}</td>
+            <td>${c.wilaya}</td>
+            <td style="font-size:0.8rem;">${itemsStr}</td>
+            <td style="color:var(--gold); font-weight:bold;">${o.total}</td>
+            <td><span class="status-badge ${getStatusColor(o.status)}">${getStatusText(o.status)}</span></td>
+            <td>
+                <select class="status-select" onchange="updateStatus('${o.id}', this.value)">
+                                <option value="" disabled selected>Update...</option>
+                                <option value="pending">Pending</option><option value="confirmed">Confirm</option>
+                                <option value="shipped">Ship</option><option value="delivered">Deliver</option><option value="cancelled">Cancel</option>
+                            </select>
+            </td>
+        </tr>
+        `; cards.innerHTML += `
+        <div class="order-card glass">
+            <div class="order-card-header">
+                <strong>${o.id}</strong><span class="status-badge ${getStatusColor(o.status)}">${getStatusText(o.status)}</span>
+            </div>
+            <div class="order-card-detail"><i class="fas fa-user"></i> ${c.fname} ${c.lname}</div>
+            <div class="order-card-detail"><i class="fas fa-phone"></i> ${c.phone}</div>
+            <div class="order-card-detail"><i class="fas fa-map-marker-alt"></i> ${c.wilaya} - ${c.address}</div>
+            <div class="order-card-detail" style="color:var(--gold);"><i class="fas fa-box"></i> ${rawItemsStr}</div>
+            <div class="order-card-header" style="border:none; padding:1rem 0 0 0; margin:1rem 0 0 0; border-top:1px solid rgba(255,255,255,0.1);">
+                <strong>Total: ${o.total} DZD</strong>
+                <select class="status-select" onchange="updateStatus('${o.id}', this.value)">
+                                <option value="" disabled selected>Status...</option>
+                                <option value="pending">Pending</option><option value="confirmed">Confirm</option>
+                                <option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="cancelled">Cancel</option>
+                            </select>
+            </div>
+        </div>
+        `; }); document.getElementById('stat-total').innerText = stats.total; document.getElementById('stat-pending').innerText = stats.pending; document.getElementById('stat-confirmed').innerText = stats.confirmed; document.getElementById('stat-shipped').innerText
+        = stats.shipped; document.getElementById('stat-delivered').innerText = stats.delivered; } window.updateStatus = async function(id, newStatus) { if(!confirm(`Are you sure you want to change order ${id} to ${getStatusText(newStatus)}?`)) return
+        fetchOrders(); try { if(db) await updateDoc(doc(db, "orders", id), { status: newStatus }); else throw new Error("Fallback required"); } catch(e) { let data = JSON.parse(localStorage.getItem('cp_orders_fallback') || '[]'); let i = data.findIndex(x
+        => x.id === id); if(i > -1) data[i].status = newStatus; localStorage.setItem('cp_orders_fallback', JSON.stringify(data)); } fetchOrders(); } document.getElementById('search').addEventListener('input', (e) => { let q = e.target.value.toLowerCase();
+        renderOrders(allOrders.filter(o => o.id.toLowerCase().includes(q) || (o.customerInfo.fname+' '+o.customerInfo.lname).toLowerCase().includes(q) || o.customerInfo.phone.includes(q) )); }); window.exportCSV = function() { let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+        const visibleOrders = document.getElementById('search').value === '' ? allOrders : allOrders.filter(o => { let q = document.getElementById('search').value.toLowerCase(); return o.id.toLowerCase().includes(q) || (o.customerInfo.fname+' '+o.customerInfo.lname).toLowerCase().includes(q)
+        || o.customerInfo.phone.includes(q); }); csvContent += "ID,Date,Customer,Phone,Wilaya,Address,Items,Total,Status\n"; visibleOrders.forEach(o => { const c = o.customerInfo; const date = new Date(o.timestamp).toLocaleString('en'); const itemsStr
+        = (o.items || []).map(i => `${i.qty}x ${i.name}`).join(';'); csvContent += `"${o.id}","${date}","${c.fname} ${c.lname}","${c.phone}","${c.wilaya}","${c.address}","${itemsStr}","${o.total}","${o.status}"\n`; }); const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a"); link.setAttribute("href", encodedUri); link.setAttribute("download", `orders_${Date.now()}.csv`); document.body.appendChild(link); link.click(); document.body.removeChild(link); }
+    </script>
+</body>
+
+</html>
